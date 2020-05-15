@@ -178,6 +178,12 @@ class Cm_RedisSession_Model_Session_Config implements \Cm\RedisSession\Handler\C
      */
     public function getDisableLocking()
     {
+        // UPDATE NOTE: check for frontend session value, return disabled for crawlers
+        $frontendCookie = Mage::app()->getCookie()->get('frontend');
+        if ($frontendCookie === 'crawler-session') {
+            return true;
+        }
+
         return $this->config->getData('disable_locking');
     }
 
